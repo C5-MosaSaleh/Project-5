@@ -117,11 +117,9 @@ const SuperHomePage = () => {
 
     getAllCategories();
   }, []);
-  console.log("the testing is");
 
   //the reason the we render each single element in another component is for performance wise
   const categoriesList = categories?.map((element) => {
-    console.log("the unique index is", element.id);
     return (
       <SingleCategory
         key={element.id}
@@ -153,38 +151,7 @@ const SuperHomePage = () => {
           {message ? <p>{message}</p> : ""}
         </form>
 
-        <div>
-          {categoriesList && categoriesList}
-          {/* {categories &&
-            categories.map((element, index) => {
-              return (
-                <div key={index}>
-                  <p>{element.name}</p>
-                  <input
-                    type={"text"}
-                    onChange={(e) => {
-                      setUpdateName(e.target.value);
-                    }}
-                  />
-                  <button
-                    onClick={() => {
-                      updateCategoryFun(element.id);
-                    }}
-                  >
-                    update
-                  </button>
-                  <button
-                    onClick={() => {
-                      deleteCategoryFun(element.id);
-                    }}
-                  >
-                    delete
-                  </button>
-                  <hr></hr>
-                </div>
-              );
-            })} */}
-        </div>
+        <div>{categories.length && categoriesList}</div>
       </div>
     </>
   );
