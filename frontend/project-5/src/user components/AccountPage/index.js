@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 //import actions
-// import { getUserInfo } from "../../redux/reducers/user";
+import { getUserInfo, updateUserInfo } from "../../redux/reducers/user";
 
 //import Model
 import UpdatePasswordModal from "./UpdatePasswordModal";
@@ -18,38 +18,33 @@ const AccountPage = () => {
   });
 
   const dispatch = useDispatch();
-
-  console.log("the user value from the store", user);
-
-  // const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const [info, setInfo] = useState("");
-  const [email, setEmail] = useState("");
-  const [first_name, setFirst_name] = useState("");
-  const [last_name, setLast_name] = useState("");
-  const [country, setCountry] = useState("");
-  const [profile_image, setProfile_image] = useState("");
+  const [email, setEmail] = useState(user.email);
+  const [first_name, setFirst_name] = useState(user.first_name);
+  const [last_name, setLast_name] = useState(user.last_name);
+  const [country, setCountry] = useState(user.country);
+  const [profile_image, setProfile_image] = useState(user.profile_image);
   const [imgUrl, setImgUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [show, setShow] = useState("");
 
-  // const getUserInfoFunc = () => {
-  //   axios
-  //     .get(`http://localhost:5000/users`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       setInfo(result.data.user[0]);
-  //       dispatch(getUserInfo(result.data.user[0]));
-  //     });
-  // };
-
-  const updateUserInfo = () => {
+  /*
+  const getUserInfoFunc = () => {
+    axios
+      .get(`http://localhost:5000/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+        setInfo(result.data.user[0]);
+        dispatch(getUserInfo(result.data.user[0]));
+      });
+  };
+*/
+  const updateUserInfoFun = () => {
     axios
       .put(
         `http://localhost:5000/users/change_info`,
@@ -58,6 +53,7 @@ const AccountPage = () => {
           first_name,
           last_name,
           country,
+          profile_image: imgUrl || user.profile_image,
         },
         {
           headers: {
@@ -66,6 +62,16 @@ const AccountPage = () => {
         }
       )
       .then((result) => {
+        dispatch(
+          updateUserInfo({
+            ...user,
+            email,
+            first_name,
+            last_name,
+            country,
+            profile_image: imgUrl || user.profile_image,
+          })
+        );
         setMessage(`update information`);
       })
       .catch((err) => {
@@ -77,9 +83,11 @@ const AccountPage = () => {
     if (!token) {
       navigate("/signin");
     }
-    // else {
-    //   getUserInfoFunc();
-    // }
+    /*
+    else {
+      getUserInfoFunc();
+    }
+    */
   }, []);
 
   const uploadImage = () => {
@@ -101,19 +109,19 @@ const AccountPage = () => {
   setTimeout(function () {
     setMessage("");
   }, 3000);
-//=============================================
+
   return (
     <>
       {user?.username ? (
         <>
           <h1> account page </h1>
-          update-password
+
           <>
             <label>Email : </label>
             <input
               type={"text"}
               placeholder="Email"
-              defaultValue={info.email}
+              defaultValue={user.email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
@@ -123,7 +131,7 @@ const AccountPage = () => {
             <input
               type={"text"}
               placeholder="First name"
-              defaultValue={info.first_name}
+              defaultValue={user.first_name}
               onChange={(e) => {
                 setFirst_name(e.target.value);
               }}
@@ -133,7 +141,7 @@ const AccountPage = () => {
             <input
               type={"text"}
               placeholder="Last Name"
-              defaultValue={info.last_name}
+              defaultValue={user.last_name}
               onChange={(e) => {
                 setLast_name(e.target.value);
               }}
@@ -143,59 +151,16 @@ const AccountPage = () => {
             <input
               type={"text"}
               placeholder="Country"
-              defaultValue={info.country}
+              defaultValue={user.country}
               onChange={(e) => {
                 setCountry(e.target.value);
               }}
             />
             <br></br>
             <p>{message}</p>
-            <button onClick={updateUserInfo}>update profile</button>
+            <button onClick={updateUserInfoFun}>update profile</button>
           </>
-          {show ? (
-            <>
-              <input
-                type={"text"}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-              <br></br>
-              <input
-                type={"text"}
-                value={first_name}
-                onChange={(e) => {
-                  setFirst_name(e.target.value);
-                }}
-              />
-              <br></br>
-              <input
-                type={"text"}
-                value={last_name}
-                onChange={(e) => {
-                  setLast_name(e.target.value);
-                }}
-              />
-              <br></br>
-              <input
-                type={"text"}
-                value={country}
-                onChange={(e) => {
-                  setCountry(e.target.value);
-                }}
-              />
-              <br></br>
-            </>
-          ) : (
-            <>
-              <p> Email : {user.email}</p>
-              <p>First Name : {user.first_name}</p>
-              <p>Last Name : {user.last_name}</p>
-              <p>Country : {user.country}</p>
-            </>
-          )}
-          <button onClick={updateUserInfo}>update profile</button>
+
           <br></br>
           {imgUrl ? (
             <img src={imgUrl} alt="profile_image" />
@@ -223,7 +188,6 @@ const AccountPage = () => {
       )}
       <br></br>
       {isOpen && <UpdatePasswordModal key={token} setIsOpen={setIsOpen} />}
-
       <button
         onClick={() => {
           setIsOpen(true);
