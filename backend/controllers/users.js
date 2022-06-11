@@ -136,6 +136,7 @@ const getUserInfo = (req, res) => {
   console.log(id);
   const command = `SELECT id,email,username ,first_name,last_name,country,profile_image,role_id FROM users WHERE is_deleted=0 AND id=? ;`;
   const data = [id];
+
   connection.query(command, data, (err, result) => {
     if (result.length > 0) {
       res.status(200).json({
@@ -178,6 +179,7 @@ const createNewAdmin = async (req, res) => {
     profile_image,
     role_id,
   ];
+
   connection.query(command, data, (err, result) => {
     if (err?.sqlMessage.includes(`for key 'users.email`)) {
       return res
@@ -208,7 +210,8 @@ const createNewAdmin = async (req, res) => {
 
 const updateUserInfo = (req, res) => {
   const id = req.token.userId;
-  const { first_name, last_name, country, profile_image } = req.body;
+
+  const { email, first_name, last_name, country, profile_image } = req.body;
 
   const command = `SELECT * FROM users WHERE id = ?`;
   const data = [id];
@@ -218,19 +221,23 @@ const updateUserInfo = (req, res) => {
         .status(500)
         .json({ success: false, message: "Server Error", err: err });
     }
+
+    const update_email = email || result[0].email;
     const update_first_name = first_name || result[0].first_name;
     const update_last_name = last_name || result[0].last_name;
     const update_country = country || result[0].country;
     const update_profile_image = profile_image || result[0].profile_image;
 
-    const command_tow = `UPDATE users SET first_name= ? ,last_name=? , country = ? ,profile_image =? WHERE id = ? `;
+    const command_tow = `UPDATE users SET email =? , first_name= ? ,last_name=? , country = ? ,profile_image =? WHERE id = ? `;
     const data = [
+      update_email,
       update_first_name,
       update_last_name,
       update_country,
       update_profile_image,
       id,
     ];
+
     connection.query(command_tow, data, (err, result) => {
       if (err) {
         return res
@@ -253,6 +260,7 @@ const updateUserInfo = (req, res) => {
         return res.status(201).json({
           message: "Account updated",
           user: {
+            email: update_email,
             first_name: update_first_name,
             last_name: update_last_name,
             country: update_country,
