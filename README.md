@@ -85,6 +85,7 @@ Ex.
 - [React JS](https://https://reactjs.org/) - Web Framework
 - [Node JS](https://nodejs.org/en/) - Server Environment
 - [Sokit io](https://socket.io/) - JavaScript library for real-time web applications.
+- [Redux](https://redux.js.org/) - JavaScript library for maneging the states in our application.
 
 ## User Story <a name = "#user_story"></a>
 
