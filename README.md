@@ -94,7 +94,7 @@ Your trello board link
 
 ## Data Flow <a name = "#data_flow"></a>
 
-<img width=200px height=200px src="https://meraki-academy-c5.slack.com/files/U035VF08J9J/F03L7TADEEQ/diagramp5.oxps" alt="Diagram"></a>
+<img width=200px height=200px src="https://meraki-academy-c5.slack.com/files/U035VF08J9J/F03L5F0UBPV/erd.png" alt="Diagram"></a>
 
 ## ⚠️ Guided By <a name = "guided_by"></a>
 
