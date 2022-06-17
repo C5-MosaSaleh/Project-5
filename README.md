@@ -26,7 +26,7 @@
 ## 🧐 About <a name = "about"></a>
 
 
-Are you looking for a quick and easy way to communicate with your friends ? Then **Discord** is the greatest application to do this for you. It helps you to create a place where you can belong. **Discord** provides a simple design to ensure having the best user experience.
+Are you looking for a quick and easy way to communicate with your friends ? Then **Discord** is the greatest application to do this for you. It helps you to create a place where you can gather with people who have a similar interests as you. **Discord** provides a simple design to ensure having the best user experience.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
