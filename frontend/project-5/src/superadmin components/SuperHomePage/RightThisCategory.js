@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 //import components
 import UpdateCategoryModal from "./UpdateCategoryModal";
 import DeleteCategoryModal from "./DeleteCategoryModal";
+import DeleteRoomBySuperAdmin from "./DeleteRoomBySuperAdmin";
 
 //import icons
 import { IoIosCreate } from "react-icons/io";
@@ -18,6 +19,10 @@ import {
   deleteCategory,
 } from "../../redux/reducers/categories";
 import { deleteRoom } from "../../redux/reducers/rooms";
+
+// import css
+
+import "./RightThisCategory.css";
 
 const RightThisCategory = () => {
   const dispatch = useDispatch("");
@@ -33,8 +38,10 @@ const RightThisCategory = () => {
 
   const [isOpen, setIsOpen] = useState(false); //the reason that we created this state is for showing or hiding the model
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [isOpenDeleteRoom, setIsOpenDeleteRoom] = useState(false);
   const [updateName, setUpdateName] = useState("");
-
+  const [roomId, setRoomId] = useState("");
+  const [roomName, setRoomName] = useState("");
   const [renderPage, setRenderPage] = useState(false);
 
   // `useParams` returns an object that contains the URL parameters
@@ -146,6 +153,49 @@ const RightThisCategory = () => {
         <>
           {/* the model component for update category */}
           {/* we make a condition if the state is false then don't show the model else show it */}
+
+          <div>
+            <div className="categoryelemntNav">
+              <div className="categoryNavName">{category.name}</div>
+              <div className="categoryBtn">
+                <button
+                  onClick={() => setIsOpen(true)}
+                  className="UpdateCategoryBtn"
+                >
+                  Update <IoIosCreate />
+                </button>
+
+                <button
+                  onClick={() => setIsOpenDelete(true)}
+                  className="DeleteCategoryBtn"
+                >
+                  Delete <BsTrashFill />
+                </button>
+              </div>
+            </div>
+            <div className="superAdminRoomContainer">
+              {roomsCategory?.map((element) => {
+                return (
+                  <>
+                    <div className="categoryContainer" key={element.id}>
+                      <p className="categoryRoomName">{element.name}</p>
+
+                      <button
+                        className="DeleteCategoryBtnRoom"
+                        onClick={() => {
+                          setIsOpenDeleteRoom(true);
+                          setRoomId(element.id);
+                          setRoomName(element.name);
+                        }}
+                      >
+                        Delete Room
+                      </button>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          </div>
           {isOpen && (
             <UpdateCategoryModal
               name={category.name}
@@ -167,42 +217,14 @@ const RightThisCategory = () => {
               setIsOpenDelete={setIsOpenDelete} //the reason that we send this state is to be able to close the model in the model component
             />
           )}
-
-          <div className="categoryelemnt">
-            <div className="categoryBtn">
-              <button
-                onClick={() => setIsOpen(true)}
-                className="UpdateCategoryBtn"
-              >
-                Update <IoIosCreate />
-              </button>
-
-              <button
-                onClick={() => setIsOpenDelete(true)}
-                className="DeleteCategoryBtn"
-              >
-                Delete <BsTrashFill />
-              </button>
-            </div>
-          </div>
-
-          <div>{category.name}</div>
-
-          {roomsCategory?.map((element) => {
-            return (
-              <div key={element.id}>
-                <p>{element.name}</p>
-
-                <button
-                  onClick={() => {
-                    deleteRoomFun(element.id);
-                  }}
-                >
-                  delete Room
-                </button>
-              </div>
-            );
-          })}
+          {isOpenDeleteRoom && (
+            <DeleteRoomBySuperAdmin
+              setIsOpenDeleteRoom={setIsOpenDeleteRoom}
+              id={roomId}
+              deleteRoomFun={deleteRoomFun}
+              name={roomName}
+            />
+          )}
         </>
       ) : (
         <div>{errMessage && <p>{errMessage}</p>}</div>
