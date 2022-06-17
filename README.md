@@ -84,6 +84,7 @@ Ex.
 - [Express JS](https://expressjs.com/) - Server Framework
 - [React JS](https://https://reactjs.org/) - Web Framework
 - [Node JS](https://nodejs.org/en/) - Server Environment
+- [Sokit io](https://socket.io/) - JavaScript library for real-time web applications.
 
 ## User Story <a name = "#user_story"></a>
 
