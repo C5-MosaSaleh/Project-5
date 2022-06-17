@@ -25,9 +25,8 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
 
-Ex. Are you looking for a quick and easy way to action, action, and action? The **Discord** is the greatest and most accurate application to do this for you. It helps you to **(list of activities)**. The **(name of application)** provides a simple design to ensure having the best user experience.
+Are you looking for a quick and easy way to communicate with your friends ? Then **Discord** is the greatest application to do this for you. It helps you to create a place where you can belong. **Discord** provides a simple design to ensure having the best user experience.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
