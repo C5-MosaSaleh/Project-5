@@ -38,8 +38,8 @@ These instructions will get you a copy of the project up and running on your loc
 - Visual Studio Code follow this <a href='https://code.visualstudio.com/download'>link</a> to install.
 - Git Bash follow this <a href='https://git-scm.com/downloads
 '>link</a> to install.
-- MongoDB follow this <a href=''>link</a> to install.
-- Node.js follow this <a href=''>link</a> to install.
+- MySQL follow this <a href='https://dev.mysql.com/downloads/workbench/'>link</a> to install.
+- Node.js follow this <a href='https://nodejs.org/en/download/'>link</a> to install.
 
 ### Installing:
 
