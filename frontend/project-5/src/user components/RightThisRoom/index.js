@@ -14,6 +14,7 @@ import { UpdateRoomModel } from "./UpdateRoomModel";
 import { DeleteRoomModal } from "./DeleteRoomModal";
 import AllUsersInThisRoomList from "./AllUsersInThisRoomList";
 import FollowRequestList from "./FollowRequestList";
+import LeaveRoomModel from "./LeaveRoomModel";
 
 // import react icon
 import { TbClipboardList } from "react-icons/tb";
@@ -53,6 +54,7 @@ export const RightThisRoom = () => {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenUsersList, setIsOpenUsersList] = useState(false);
   const [isOpenFollowRequest, setIsOpenFollowRequest] = useState(false);
+  const [isOpenLeaveRoom, setIsOpenLeaveRoom] = useState(false);
 
   const [renderPage, setRenderPage] = useState(false);
 
@@ -141,7 +143,7 @@ export const RightThisRoom = () => {
     });
   };
 
-  const sendFile = (fileURL) => {
+  const sendFile = (fileURL, fileName) => {
     console.log("the file url is this one", fileURL);
     const messageContent = {
       room_id: room.id,
@@ -149,6 +151,7 @@ export const RightThisRoom = () => {
         user_id: user.id,
         username: user.username,
         document: fileURL,
+        document_name: fileName,
       },
     };
 
@@ -199,12 +202,13 @@ export const RightThisRoom = () => {
     })
       .then((resp) => resp.json())
       .then((data) => {
-        sendFile(data.url);
+        console.log("all the data are", data.original_filename);
+        sendFile(data.url, data.original_filename);
       })
       .catch((err) => console.log(err));
   };
 
-  //this function is for downloading the cv
+  //this function is for downloading the file
   const downloadFile = (fileUrl) => {
     let filePath = fileUrl;
     axios
@@ -220,7 +224,24 @@ export const RightThisRoom = () => {
       });
   };
 
-  console.log("this is admin id ", !room.admin_id);
+  //===============================================================
+
+  const leaveRoom = (id) => {
+    axios
+      .put(`http://localhost:5000/rooms/${id}/leave_room`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log(room.id);
 
   return (
     <div className="RightThisRoom">
@@ -278,14 +299,16 @@ export const RightThisRoom = () => {
                 </>
               )}
               {room.admin_id !== user.id && (
-                <div className="toolTip">
-                  <span className="toolTipText">Leave Room</span>
-                  <ImExit
-                    className="leaveIcon"
-                    onClick={() => {
-                      // setIsOpenFollowRequest(true);
-                    }}
-                  />
+                <div className="leaveDiv">
+                  <div className="toolTip">
+                    <span className="toolTipText">Leave Room</span>
+                    <ImExit
+                      className="leaveIcon"
+                      onClick={() => {
+                        setIsOpenLeaveRoom(true);
+                      }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -329,6 +352,7 @@ export const RightThisRoom = () => {
                               }}
                             >
                               <input
+                                className="updateMessageField"
                                 defaultValue={element.description}
                                 onChange={(e) =>
                                   setUpdatedMessage(e.target.value)
@@ -409,7 +433,7 @@ export const RightThisRoom = () => {
                           </div>
                         </div>
 
-                        <div className="messageTextContainerDocument">
+                        <div className="messageTextContainerImage">
                           <img
                             className="imageDocument"
                             src={element.message_image}
@@ -449,8 +473,7 @@ export const RightThisRoom = () => {
                           <AiFillFile className="documentIcon" />
 
                           <a href="#" className="document-name">
-                            {"this is a old File File file" +
-                              "element.document"}
+                            {element.document_name}
                           </a>
 
                           <div className="documentcontainer">
@@ -670,6 +693,15 @@ export const RightThisRoom = () => {
             <FollowRequestList
               setIsOpenFollowRequest={setIsOpenFollowRequest}
               roomId={id}
+            />
+          )}
+          {isOpenLeaveRoom && (
+            <LeaveRoomModel
+              setIsOpenLeaveRoom={setIsOpenLeaveRoom}
+              roomId={room.id}
+              roomName={room.name}
+              setRenderPage={setRenderPage}
+              renderPage={renderPage}
             />
           )}
         </div>
